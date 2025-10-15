@@ -22,13 +22,25 @@ RUN echo "VITE_OPENAI_API_KEY=${VITE_OPENAI_API_KEY}" > .env && \
 
 RUN npm run build
 
-FROM nginx:stable-alpine AS production
+FROM node:22-alpine AS production
 
-COPY --from=builder /usr/src/app/dist /usr/share/nginx/html
-COPY ./default.conf.template /etc/nginx/conf.d/default.conf.template
-COPY entrypoint.sh /entrypoint.sh
-RUN chmod +x /entrypoint.sh
+WORKDIR /usr/src/app
 
-EXPOSE 80
+ENV NODE_ENV=production
 
-ENTRYPOINT ["/entrypoint.sh"]
+# Copy built client
+COPY --from=builder /usr/src/app/dist ./dist
+
+# Copy server and package files
+COPY server ./server
+COPY package.json package-lock.json ./
+
+# Install only production dependencies
+RUN npm ci --omit=dev
+
+# Environment variables for server
+ENV PORT=8080
+
+EXPOSE 8080
+
+CMD ["node", "server/index.js"]

@@ -37,6 +37,8 @@
     </head>
     <body>
         <div id="root"></div>
+        <!-- Load Socket.IO client from the server to provide global `io` -->
+        <script src="/socket.io/socket.io.js"></script>
         <script type="module" src="/src/main.tsx"></script>
     </body>
 </html>

@@ -3,8 +3,6 @@ import { customAlphabet } from 'nanoid';
 import { twMerge } from 'tailwind-merge';
 const randomId = customAlphabet('0123456789abcdefghijklmnopqrstuvwxyz', 25);
 
-const UUID_KEY = 'uuid';
-
 export function cn(...inputs: ClassValue[]) {
     return twMerge(clsx(inputs));
 }
@@ -14,20 +12,17 @@ export const emptyFn = (): any => undefined;
 
 export const generateId = () => randomId();
 
+// Avoid any browser storage; keep a per-session in-memory workspace id
+let __workspaceId: string | undefined;
 export const getWorkspaceId = (): string => {
-    let workspaceId = localStorage.getItem(UUID_KEY);
-
-    if (!workspaceId) {
-        workspaceId = randomId(8);
-        localStorage.setItem(UUID_KEY, workspaceId);
+    if (!__workspaceId) {
+        __workspaceId = randomId(8);
     }
-
-    return workspaceId;
+    return __workspaceId;
 };
 
 export const generateDiagramId = () => {
     const prefix = getWorkspaceId();
-
     return `${prefix}${randomId(4)}`;
 };
 

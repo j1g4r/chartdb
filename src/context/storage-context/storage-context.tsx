@@ -14,6 +14,14 @@ export interface StorageContext {
     getConfig: () => Promise<ChartDBConfig | undefined>;
     updateConfig: (config: Partial<ChartDBConfig>) => Promise<void>;
 
+    // Apply server updates (real-time sync)
+    applyServerWorkspaceUpdate: (payload: {
+        id: string;
+        name?: string;
+        diagram?: Diagram;
+        updatedAt?: string | Date;
+    }) => Promise<void>;
+
     // Diagram filter operations
     getDiagramFilter: (diagramId: string) => Promise<DiagramFilter | undefined>;
     updateDiagramFilter: (
@@ -140,6 +148,7 @@ export interface StorageContext {
 export const storageInitialValue: StorageContext = {
     getConfig: emptyFn,
     updateConfig: emptyFn,
+    applyServerWorkspaceUpdate: emptyFn,
 
     getDiagramFilter: emptyFn,
     updateDiagramFilter: emptyFn,

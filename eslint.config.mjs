@@ -20,8 +20,22 @@ const compat = new FlatCompat({
 
 export default [
     {
-        ignores: ['**/dist', '**/.eslintrc.cjs', '**/tailwind.config.js'],
+        ignores: [
+            '**/dist',
+            '**/.eslintrc.cjs',
+            '**/tailwind.config.js',
+            '**/*.json',
+        ],
         // files: ['**/*.ts', '**/*.tsx'],
+    },
+    // Node server files: enable Node globals to avoid `process` no-undef
+    {
+        files: ['server/**/*.js', 'vite.config.ts', 'vitest.config.ts'],
+        languageOptions: {
+            globals: {
+                ...globals.node,
+            },
+        },
     },
     ...fixupConfigRules(
         compat.extends(

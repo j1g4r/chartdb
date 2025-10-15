@@ -4,8 +4,10 @@
     "version": "1.16.0",
     "type": "module",
     "scripts": {
-        "dev": "vite",
+        "dev": "concurrently \"vite\" \"node server/index.js\"",
+        "build:client": "vite build",
         "build": "npm run lint && tsc -b && vite build",
+        "start": "node server/index.js",
         "lint": "eslint . --report-unused-disable-directives --max-warnings 0",
         "lint:fix": "npm run lint -- --fix",
         "preview": "vite preview",
@@ -16,6 +18,13 @@
         "test:coverage": "vitest --coverage"
     },
     "dependencies": {
+        "bcryptjs": "^2.4.3",
+        "better-sqlite3": "^11.7.0",
+        "cookie-session": "^2.0.0",
+        "cors": "^2.8.5",
+        "express": "^4.19.2",
+        "socket.io": "^4.7.5",
+        "socket.io-client": "^4.7.5",
         "@ai-sdk/openai": "^0.0.51",
         "@dbml/core": "^3.13.9",
         "@dnd-kit/sortable": "^8.0.0",
